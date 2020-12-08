@@ -1,5 +1,5 @@
 # grignetta
-Prototyping and eventually (hopefully) building a plugin for de-clipping audio files that is open source and easy to use
+Prototyping and eventually building a plugin for de-clipping audio files that is open source and easy to use
 
 Plan:
 - prototyping in Matlab/Octave 
@@ -10,6 +10,8 @@ Plan:
 
 - once the algorithm is established, build a vst plugin for use in DAWs
 
+
+the main testing file at the moment is prova_restore.m. Try that. It already sounds reasonably ok, but there is large room for improvement, and for trying different strategies (Kalman filtering? Autoregressive models? Machine learning (this is how some big players say they are doing it, but we can't know for sure)?)
 
 
 many comments in the code are still in italian, sorry
