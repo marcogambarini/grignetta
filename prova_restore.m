@@ -18,9 +18,11 @@ Nbit = 16;
 figure
 subplot(2, 1, 1)
 plot(y, '.-')
+title('signal')
 %xlim([68315 68325])
 subplot(2, 1, 2)
 plot(abs(diff(y)), '.-')
+title('signal variation')
 %xlim([68315 68325])
 
 
@@ -91,10 +93,12 @@ play(p_clean);
 figure
 subplot(2, 1, 1)
 plot(yclean, '.-')
+title('processed signal')
 hold on
 plot(clippedSamples, 'k.-');
 %xlim([68315 68325])
 subplot(2, 1, 2)
 %plot(abs(diff(y)), '.-')
 plot(yclean-y)
+title('processed-raw signal')
 %xlim([68315 68325])
