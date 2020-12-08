@@ -6,7 +6,7 @@ Plan:
   (note: keep code compatible with Octave, try to avoid using special Matlab toolboxes, so that porting will be easier
    and anybody can collaborate)
 
-( -porting in Python for larger possible user/collaborator base? but still Octave is simple, lightweight and open-source, so...) )
+- porting in Python? (larger possible user/collaborator base? but still Octave is simple, lightweight and open-source, so...) 
 
 - once the algorithm is established, build a vst plugin for use in DAWs
 
