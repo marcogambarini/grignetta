@@ -11,7 +11,8 @@ Plan:
 - once the algorithm is established, build a vst plugin for use in DAWs
 
 
-the main testing file at the moment is prova_restore.m. Try that. It already sounds reasonably ok, but there is large room for improvement, and for trying different strategies (Kalman filtering? Autoregressive models? Machine learning (this is how some big players say they are doing it, but we can't know for sure)?)
+The main testing file at the moment is prova_restore.m. Try that. It already sounds reasonably ok, but there is large room for improvement, and for trying different strategies (Kalman filtering? Autoregressive models? Machine learning (this is how some big players say they are doing it, but we can't know for sure)?)
 
 
+audio files are lavalier recordings from an unreleased movie: https://www.imdb.com/title/tt10206898/
 many comments in the code are still in italian, sorry
