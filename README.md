@@ -11,9 +11,11 @@ Plan:
 - once the algorithm is established, build a vst plugin for use in DAWs
 
 
-The main testing file at the moment is prova_restore.m. Try that. It already sounds reasonably ok, but there is large room for improvement, and for trying different strategies (Kalman filtering? Autoregressive models? Machine learning (this is how some big players say they are doing it, but we can't know for sure)?)
+The main testing file at the moment is prova_restore.m. Try that. It already sounds reasonably ok, but there is large room for improvement, and for trying different strategies. See for example
+http://reports.ias.ac.in/report/18659/a-comparison-of-different-methods-for-audio-declipping
+https://spade.inria.fr/#About_spade
 
 
-Audio files are raw lavalier recordings from a movie currently in production: https://www.imdb.com/title/tt10206898/, for which this work will be used
+Audio files are raw lavalier recordings from a movie currently in production (soon in post-production!!): https://www.imdb.com/title/tt10206898/, for which this work will be used.
 
 Many comments in the code are still in italian, sorry
