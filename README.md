@@ -15,7 +15,7 @@ http://reports.ias.ac.in/report/18659/a-comparison-of-different-methods-for-audi
 
 https://spade.inria.fr/#About_spade
 
-At the moment the script runs at about 3x realtime on a single core on my laptop. I am planning on trying to parallelize it, but since I will use it for batch cleaning of files I will probably just run multiple instances in parallel - so parallelization is not a prority right now.
+At the moment the script runs at about 3x realtime on a single core on my laptop. I am planning on trying to parallelize it, but since I will use it for batch cleaning of files I will probably just run multiple instances in parallel - so parallelization is not a priority right now.
 
 Audio files are raw lavalier recordings from a movie currently in production (soon in post-production!!): https://www.imdb.com/title/tt10206898/, for which this work will be used.
 
