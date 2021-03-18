@@ -1,8 +1,13 @@
 clc, clear all, close all
 
-[y, Fs] = audioread('esempio_norm_0.wav', 'native');
+fileName = 'esempio_norm_0.wav';
+%fileName = 'esempio_norm_0.wav';
+tic
+disp('Reading audio...')
+fflush(stdout()); %print to screen immediately
+[yprenorm, Fs] = audioread(fileName, 'native');
 %[y, Fs] = audioread('esempio_norm_-1.wav', 'native');
-p = audioplayer(y, Fs);
+%p = audioplayer(yprenorm, Fs);
 %play(p);
 Nbit = 16;
 
@@ -10,20 +15,24 @@ Nbit = 16;
 %massimo di 1 nel formato double, e al valore 2^(Nbit-1)-1 nel formato
 %native. I lavalier sono normalmente registrati a 16 o 24 bit
 
-%per normalizzare dovrei applicare un gain (moltiplicare tutti i valori per
-%una costante) pari al valore massimo rappresentabile diviso per il valore
-%massimo nel segnale, e poi quantizzare il risultato. questo non è banale!
-%(dithering?)
+disp('Normalizing...')
+fflush(stdout());
+%normalizzazione
+ynorm = double(yprenorm)/double(max(abs(yprenorm))) * (2^(Nbit-1)-1);
+%casting
+y = cast(ynorm, 'int16');
 
-figure
-subplot(2, 1, 1)
-plot(y, '.-')
-title('signal')
-%xlim([68315 68325])
-subplot(2, 1, 2)
-plot(abs(diff(y)), '.-')
-title('signal variation')
-%xlim([68315 68325])
+
+
+%figure
+%subplot(2, 1, 1)
+%plot(y, '.-')
+%title('signal')
+%%xlim([68315 68325])
+%subplot(2, 1, 2)
+%plot(abs(diff(y)), '.-')
+%title('signal variation')
+%%xlim([68315 68325])
 
 
 %usare i percentili per individuare i punti di probabile clipping non ha
@@ -33,16 +42,11 @@ title('signal variation')
 
 %peakthreshold e diffthreshold saranno le manopole del plugin
 
-peakThreshold = 2^(Nbit-1) - 2000; %cerco attorno ai punti con almeno questa intensità
+peakThreshold = 2^(Nbit-1) - 5000; %cerco attorno ai punti con almeno questa intensità
 diffThreshold = 800; %ritengo che un punto sia clippato se differisce di così poco dal precedente
 numThreshold = 3; %e se questo succede per almeno numthreshold punti di fila
 
-%per evitare di applicare l'autoregressione su tutto il segnale (che
-%sarebbe inutile) spezzo il segnale di partenza attorno ai punti che vanno
-%puliti, ma a questo penserò dopo
 
-%analizzare sempre i tempi con tic toc per capire se sto davvero
-%migliorando o se sono solo paranoie
 
 windowSize = 20;
 
@@ -57,6 +61,9 @@ clippedSamples(:) = NaN;
 
 yclean = cast(y, 'double');
 
+disp('Declipping')
+fflush(stdout());
+%hwb = waitbar(0, '0.00%%');
 while (ii<=Ny)
     if (abs(y(ii)) > peakThreshold)
         secStart = ii;
@@ -74,9 +81,15 @@ while (ii<=Ny)
             filteringArea(3:end-2) = NaN;
             filteringArea = peak_restore(filteringArea);
             yclean(secStart-2:secStart+secCount+2) = filteringArea;
+            %averaging at the extremities for better matching
+          %  yclean(secStart-2:secStart-1) = 0.5*(yclean(secStart-2:secStart-1)+...
+          %                                      y(secStart-2:secStart-1));
+          %  yclean(secStart+secCount+1:secStart+secCount+2) = 0.5*(yclean(secStart+secCount+1:secStart+secCount+2)+...
+          %                                                          y(secStart+secCount+1:secStart+secCount+2));
         end
     end
     ii = ii+1;
+   % waitbar(ii/Ny, hwb, sprintf('%.2f%%',100*ii/Ny));
 end
 
 %%
@@ -87,18 +100,29 @@ yclean = yclean/max(abs(yclean)) * (2^(Nbit-1)-1);
 %casting
 yclean = cast(yclean, 'int16');
 
-p_clean = audioplayer(yclean, Fs);
-play(p_clean);
+%p_clean = audioplayer(yclean, Fs);
+%play(p_clean);
 
-figure
-subplot(2, 1, 1)
-plot(yclean, '.-')
-title('processed signal')
-hold on
-plot(clippedSamples, 'k.-');
-%xlim([68315 68325])
-subplot(2, 1, 2)
-%plot(abs(diff(y)), '.-')
-plot(yclean-y)
-title('processed-raw signal')
-%xlim([68315 68325])
+numClippedSamples = sum(~isnan(clippedSamples));
+printf('There were %i clipped samples on a total %i samples, %d%% \n', ...
+          numClippedSamples, Ny, 100*numClippedSamples/Ny);
+
+disp('Exporting...')
+fflush(stdout());
+mkdir clean;
+audiowrite(['clean/' fileName], yclean, Fs);
+
+timeElapsed = toc;
+printf('Time elapsed = %i /// %.1fx faster than realtime \n', timeElapsed, Ny/Fs/timeElapsed);     
+%figure
+%subplot(2, 1, 1)
+%plot(yclean, '.-')
+%title('processed signal')
+%hold on
+%plot(clippedSamples, 'k.-');
+%%xlim([68315 68325])
+%subplot(2, 1, 2)
+%%plot(abs(diff(y)), '.-')
+%plot(yclean-y)
+%title('processed-raw signal')
+%%xlim([68315 68325])
