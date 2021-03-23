@@ -19,9 +19,9 @@ The algorithm is quite naive. It is a 2-step process:
 
 (1) recognition: it finds clipped samples following the criteria
 
-  (a) sample value greater than threshold value peakThreshold
+   - sample value greater than threshold value peakThreshold
   
-  (b) at least numThreshold adjacent samples with amplitudes closer to each other than diffThreshold
+   - at least numThreshold adjacent samples with amplitudes closer to each other than diffThreshold
   
 (2) restoration: clipped areas are substituted by least-square fit of parabolas (peaks) (this sounds so dumb but it's working!)
 
